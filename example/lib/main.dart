@@ -26,13 +26,14 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var startDate = DateUtils.getFirstDayOfCurrentMonth();
-    var endDate = DateUtils.getLastDayOfNextMonth();
+    var endDate = DateTime(2022, 12, 31);
     monthCalendarro = Calendarro(
         startDate: startDate,
         endDate: endDate,
         displayMode: DisplayMode.MONTHS,
         selectionMode: SelectionMode.MULTI,
         weekdayLabelsRow: CustomWeekdayLabelsRow(),
+        startDay: DateTime.tuesday,
         onTap: (date) {
           print("onTap: $date");
         });
@@ -42,10 +43,6 @@ class MyHomePage extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          Container(
-            color: Colors.orange,
-            child: Calendarro(),
-          ),
           Container(height: 32.0),
           monthCalendarro
         ],
@@ -59,13 +56,13 @@ class CustomWeekdayLabelsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Expanded(child: Text("M", textAlign: TextAlign.center)),
         Expanded(child: Text("T", textAlign: TextAlign.center)),
         Expanded(child: Text("W", textAlign: TextAlign.center)),
         Expanded(child: Text("T", textAlign: TextAlign.center)),
         Expanded(child: Text("F", textAlign: TextAlign.center)),
         Expanded(child: Text("S", textAlign: TextAlign.center)),
         Expanded(child: Text("S", textAlign: TextAlign.center)),
+        Expanded(child: Text("M", textAlign: TextAlign.center)),
       ],
     );
   }

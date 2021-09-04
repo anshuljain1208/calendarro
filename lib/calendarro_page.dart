@@ -11,14 +11,17 @@ class CalendarroPage extends StatelessWidget {
   DateTime pageEndDate;
   Widget weekdayLabelsRow;
 
-  int startDayOffset;
+  int startDayOffset = 0;
+  int startDay ;
+
 
   CalendarroPage({
     this.pageStartDate,
     this.pageEndDate,
-    this.weekdayLabelsRow
+    this.weekdayLabelsRow,
+    this.startDay
   }) {
-    startDayOffset = pageStartDate.weekday - DateTime.monday;
+    getStartDayOffset();
   }
 
   @override
@@ -69,13 +72,26 @@ class CalendarroPage extends StatelessWidget {
     return rows;
   }
 
+  getStartDayOffset() {
+    if ( startDay < 1 || startDay > 7) {
+      startDay = 1;
+    }
+    int rightShift = 7 - startDay;
+    startDayOffset = (pageStartDate.weekday + rightShift) % 7;
+  }
+
+  int adjustedWeekday(int weekday) {
+    int rightShift = 7 - startDay;
+    return (weekday + rightShift) % 7 + 1;
+  }
+
   List<Widget> buildCalendarRow(
       BuildContext context, DateTime rowStartDate, DateTime rowEndDate) {
     List<Widget> items = [];
 
     DateTime currentDate = rowStartDate;
     for (int i = 0; i < 7; i++) {
-      if (i + 1 >= rowStartDate.weekday && i + 1 <= rowEndDate.weekday) {
+      if (i + 1 >= adjustedWeekday(rowStartDate.weekday) && i + 1 <= adjustedWeekday(rowEndDate.weekday)) {
         CalendarroState calendarroState = Calendarro.of(context);
           Widget dayTile = calendarroState.widget.dayTileBuilder
               .build(context, currentDate, calendarroState.widget.onTap);

@@ -30,8 +30,9 @@ class Calendarro extends StatefulWidget {
   DateTime selectedSingleDate;
   List<DateTime> selectedDates;
 
-  int startDayOffset;
+  int startDayOffset = 0;
   CalendarroState state;
+  int startDay ;
 
   double dayTileHeight = 40.0;
   double dayLabelHeight = 20.0;
@@ -48,6 +49,7 @@ class Calendarro extends StatefulWidget {
     this.onTap,
     this.onPageSelected,
     this.weekdayLabelsRow,
+    this.startDay,
   }) : super(key: key) {
     if (startDate == null) {
       startDate = DateUtils.getFirstDayOfCurrentMonth();
@@ -62,7 +64,7 @@ class Calendarro extends StatefulWidget {
     if (startDate.isAfter(endDate)) {
       throw new ArgumentError("Calendarro: startDate is after the endDate");
     }
-    startDayOffset = startDate.weekday - DateTime.monday;
+    startDayOffset = startDate.weekday - DateTime.sunday;
 
     if (dayTileBuilder == null) {
       dayTileBuilder = DefaultDayTileBuilder();
@@ -271,7 +273,9 @@ class CalendarroState extends State<Calendarro> {
     return CalendarroPage(
         pageStartDate: pageDateRange.startDate,
         pageEndDate: pageDateRange.endDate,
-        weekdayLabelsRow: widget.weekdayLabelsRow);
+        weekdayLabelsRow: widget.weekdayLabelsRow,
+        startDay: widget.startDay
+    );
   }
 
   Widget _buildCalendarPageInMonthsMode(int position) {
@@ -281,6 +285,7 @@ class CalendarroState extends State<Calendarro> {
       pageStartDate: pageDateRange.startDate,
       pageEndDate: pageDateRange.endDate,
       weekdayLabelsRow: widget.weekdayLabelsRow,
+        startDay: widget.startDay
     );
   }
 
