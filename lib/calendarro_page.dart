@@ -88,7 +88,6 @@ class CalendarroPage extends StatelessWidget {
   List<Widget> buildCalendarRow(
       BuildContext context, DateTime rowStartDate, DateTime rowEndDate) {
     List<Widget> items = [];
-
     DateTime currentDate = rowStartDate;
     for (int i = 0; i < 7; i++) {
       if (i + 1 >= adjustedWeekday(rowStartDate.weekday) && i + 1 <= adjustedWeekday(rowEndDate.weekday)) {
@@ -96,7 +95,8 @@ class CalendarroPage extends StatelessWidget {
           Widget dayTile = calendarroState.widget.dayTileBuilder
               .build(context, currentDate, calendarroState.widget.onTap);
           items.add(dayTile);
-        currentDate = currentDate.add(Duration(days: 1));
+        // currentDate = currentDate.add(Duration(days: 1));
+        currentDate = DateTime(currentDate.year, currentDate.month, currentDate.day + 1);
       } else {
         items.add(Expanded(
           child: Text(""),
