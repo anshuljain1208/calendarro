@@ -5,20 +5,20 @@ import 'package:flutter/material.dart' hide DateUtils;
 class CalendarroDayItem extends StatelessWidget {
   CalendarroDayItem({this.date, this.calendarroState, this.onTap});
 
-  DateTime date;
-  CalendarroState calendarroState;
-  DateTimeCallback onTap;
+  DateTime? date;
+  CalendarroState? calendarroState;
+  DateTimeCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    bool isWeekend = DateUtils.isWeekend(date);
+    bool isWeekend = DateUtils.isWeekend(date!);
     var textColor = isWeekend ? Colors.grey : Colors.black;
-    bool isToday = DateUtils.isToday(date);
+    bool isToday = DateUtils.isToday(date!);
     calendarroState = Calendarro.of(context);
 
-    bool daySelected = calendarroState.isDateSelected(date);
+    bool daySelected = calendarroState!.isDateSelected(date);
 
-    BoxDecoration boxDecoration;
+    BoxDecoration? boxDecoration;
     if (daySelected) {
       boxDecoration = BoxDecoration(color: Colors.blue, shape: BoxShape.circle);
     } else if (isToday) {
@@ -37,7 +37,7 @@ class CalendarroDayItem extends StatelessWidget {
               decoration: boxDecoration,
               child: Center(
                   child: Text(
-                    "${date.day}",
+                    "${date!.day}",
                     textAlign: TextAlign.center,
                     style: TextStyle(color: textColor),
                   ))),
@@ -48,10 +48,10 @@ class CalendarroDayItem extends StatelessWidget {
 
   void handleTap() {
     if (onTap != null) {
-      onTap(date);
+      onTap!(date);
     }
 
-    calendarroState.setSelectedDate(date);
-    calendarroState.setCurrentDate(date);
+    calendarroState!.setSelectedDate(date);
+    calendarroState!.setCurrentDate(date);
   }
 }
