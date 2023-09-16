@@ -4,7 +4,6 @@ import 'package:calendarro/default_weekday_labels_row.dart';
 import 'package:flutter/material.dart' hide DateUtils;
 
 class CalendarroPage extends StatelessWidget {
-
   static final MAX_ROWS_COUNT = 6;
 
   DateTime? pageStartDate;
@@ -12,15 +11,13 @@ class CalendarroPage extends StatelessWidget {
   Widget? weekdayLabelsRow;
 
   int startDayOffset = 0;
-  int? startDay ;
+  int? startDay;
 
-
-  CalendarroPage({
-    this.pageStartDate,
-    this.pageEndDate,
-    this.weekdayLabelsRow,
-    this.startDay
-  }) {
+  CalendarroPage(
+      {this.pageStartDate,
+      this.pageEndDate,
+      this.weekdayLabelsRow,
+      this.startDay}) {
     getStartDayOffset();
   }
 
@@ -29,31 +26,32 @@ class CalendarroPage extends StatelessWidget {
     return Container(
         child: Column(
             children: buildRows(context) as List<Widget>,
-            mainAxisSize: MainAxisSize.min
-        )
-    );
+            mainAxisSize: MainAxisSize.min));
   }
 
-  List<Widget?> buildRows(BuildContext context) {
-    List<Widget?> rows = [];
-    rows.add(weekdayLabelsRow);
+  List<Widget> buildRows(BuildContext context) {
+    List<Widget> rows = [];
+    if (weekdayLabelsRow != null) {
+      rows.add(weekdayLabelsRow!);
+    }
 
-    DateTime rowLastDayDate = DateUtils.addDaysToDate(pageStartDate!, 6 - startDayOffset);
+    DateTime rowLastDayDate =
+        DateUtils.addDaysToDate(pageStartDate!, 6 - startDayOffset);
 
     if (pageEndDate!.isAfter(rowLastDayDate)) {
       rows.add(Row(
-          children: buildCalendarRow(context, pageStartDate, rowLastDayDate))
-      );
+          children: buildCalendarRow(context, pageStartDate, rowLastDayDate)));
 
       for (var i = 1; i < MAX_ROWS_COUNT; i++) {
-        DateTime nextRowFirstDayDate = DateUtils.addDaysToDate(pageStartDate!, 7 * i - startDayOffset);
+        DateTime nextRowFirstDayDate =
+            DateUtils.addDaysToDate(pageStartDate!, 7 * i - startDayOffset);
 
         if (nextRowFirstDayDate.isAfter(pageEndDate!)) {
           break;
         }
 
-        DateTime nextRowLastDayDate = DateUtils.addDaysToDate(pageStartDate!, 7 * i - startDayOffset + 6);
-
+        DateTime nextRowLastDayDate =
+            DateUtils.addDaysToDate(pageStartDate!, 7 * i - startDayOffset + 6);
 
         if (nextRowLastDayDate.isAfter(pageEndDate!)) {
           nextRowLastDayDate = pageEndDate!;
@@ -64,16 +62,15 @@ class CalendarroPage extends StatelessWidget {
                 context, nextRowFirstDayDate, nextRowLastDayDate)));
       }
     } else {
-      rows.add(Row(
-          children: buildCalendarRow(context, pageStartDate, pageEndDate))
-      );
+      rows.add(
+          Row(children: buildCalendarRow(context, pageStartDate, pageEndDate)));
     }
 
     return rows;
   }
 
   getStartDayOffset() {
-    if ( startDay! < 1 || startDay! > 7) {
+    if (startDay! < 1 || startDay! > 7) {
       startDay = 1;
     }
     int rightShift = 7 - startDay!;
@@ -90,13 +87,15 @@ class CalendarroPage extends StatelessWidget {
     List<Widget> items = [];
     DateTime? currentDate = rowStartDate;
     for (int i = 0; i < 7; i++) {
-      if (i + 1 >= adjustedWeekday(rowStartDate!.weekday) && i + 1 <= adjustedWeekday(rowEndDate!.weekday)) {
+      if (i + 1 >= adjustedWeekday(rowStartDate!.weekday) &&
+          i + 1 <= adjustedWeekday(rowEndDate!.weekday)) {
         CalendarroState calendarroState = Calendarro.of(context)!;
-          Widget dayTile = calendarroState.widget.dayTileBuilder!
-              .build(context, currentDate, calendarroState.widget.onTap);
-          items.add(dayTile);
+        Widget dayTile = calendarroState.widget.dayTileBuilder!
+            .build(context, currentDate, calendarroState.widget.onTap);
+        items.add(dayTile);
         // currentDate = currentDate.add(Duration(days: 1));
-        currentDate = DateTime(currentDate!.year, currentDate.month, currentDate.day + 1);
+        currentDate =
+            DateTime(currentDate!.year, currentDate.month, currentDate.day + 1);
       } else {
         items.add(Expanded(
           child: Text(""),
